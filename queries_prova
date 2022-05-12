@@ -1,0 +1,45 @@
+# AMIGO DE DADOS - QUESTÃO 10
+
+    SELECT city, country_id
+    FROM locations
+    WHERE country_id = 'UK' or country_id = 'DE'
+    
+# AMIGO DE DADOS - QUESTÃO 11
+
+    SELECT city
+    FROM locations
+    WHERE city like '%l%'
+    
+# AMIGO DE DADOS - QUESTÃO 12
+
+    SELECT CONCAT(employees.first_name, ' ', employees.last_name) nome_completo, email
+    FROM employees	
+    FULL JOIN dependents on employees.employee_id = dependents.employee_id
+    WHERE dependent_id IS NULL
+    ORDER BY nome_completo
+    
+# AMIGO DE DADOS - QUESTÃO 13
+
+    SELECT
+      CONCAT(first_name, ' ', last_name) AS nome_completo,
+      hire_date AS data_admissao,
+      FLOOR((current_date - hire_date)/365.25) AS anos_de_empresa,
+    CASE
+      WHEN FLOOR(((current_date - 2) - hire_date)/365.25) >= 30 THEN 'Ouro'
+      WHEN FLOOR(((current_date - 2) - hire_date)/365.25) BETWEEN 25 AND 29 THEN 'Prata'
+      ELSE 'Esperar'
+    END AS premio
+    FROM employees
+    ORDER BY premio DESC
+    
+# AMIGO DE DADOS - QUESTÃO 15
+
+    WITH resultado AS (
+    SELECT departments.department_name, COUNT(employees.employee_id), SUM(salary), AVG(salary)
+    FROM employees
+    FULL JOIN departments ON employees.department_id = departments.department_id
+    GROUP BY departments.department_name
+    ORDER BY SUM(salary) DESC
+    )
+    SELECT * FROM resultado
+    ORDER BY avg DESC
